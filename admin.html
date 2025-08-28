@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - COP30 Questionnaire Responses | Jetage Energy</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid var(--primary-gold);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-green);
+        }
+        
+        .responses-table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .responses-header {
+            background: var(--primary-green);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .filter-controls input,
+        .filter-controls select {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+        }
+        
+        .responses-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .response-item {
+            border-bottom: 1px solid var(--border-light);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .response-item:hover {
+            background-color: var(--bg-light);
+        }
+        
+        .response-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .contact-name {
+            font-weight: bold;
+            color: var(--primary-green);
+            font-size: 1.1rem;
+        }
+        
+        .submission-date {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .response-preview {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .file-count {
+            background: var(--primary-gold);
+            color: var(--text-dark);
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-left: 1rem;
+        }
+        
+        .response-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .view-btn {
+            background: var(--light-green);
+            color: white;
+        }
+        
+        .download-btn {
+            background: var(--primary-gold);
+            color: var(--text-dark);
+        }
+        
+        .export-btn {
+            background: var(--primary-green);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-bottom: 2rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--error);
+        }
+        
+        .login-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 400px;
+            margin: 4rem auto;
+        }
+        
+        .login-form h2 {
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-screen">
+        <div class="container">
+            <div class="admin-header">
+                <img src="jetagelogo.png" alt="Jetage Energy Logo" class="logo">
+                <h1>COP30 Admin Dashboard</h1>
+                <p>Questionnaire Responses Management</p>
+            </div>
+            
+            <div class="login-form">
+                <h2>Admin Login</h2>
+                <form id="admin-login">
+                    <div class="form-group">
+                        <label for="admin-username">Username:</label>
+                        <input type="text" id="admin-username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Password:</label>
+                        <input type="password" id="admin-password" name="password" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="submit-btn">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-dashboard" style="display: none;">
+        <div class="admin-container">
+            <div class="admin-header">
+                <div>
+                    <img src="jetagelogo.png" alt="Jetage Energy Logo" class="logo">
+                    <h1>COP30 Admin Dashboard</h1>
+                    <p>Questionnaire Responses Management</p>
+                </div>
+                <button onclick="logout()" style="background: rgba(255,255,255,0.2); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Logout</button>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-responses">0</div>
+                    <div>Total Responses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="responses-today">0</div>
+                    <div>Responses Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="total-files">0</div>
+                    <div>Files Uploaded</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pending-review">0</div>
+                    <div>Pending Review</div>
+                </div>
+            </div>
+
+            <button class="export-btn" onclick="exportAllData()">Export All Data</button>
+
+            <div class="responses-table">
+                <div class="responses-header">
+                    <h3>Questionnaire Responses</h3>
+                    <div class="filter-controls">
+                        <input type="text" id="search-responses" placeholder="Search responses...">
+                        <select id="filter-date">
+                            <option value="">All Dates</option>
+                            <option value="today">Today</option>
+                            <option value="week">This Week</option>
+                            <option value="month">This Month</option>
+                        </select>
+                        <button onclick="refreshResponses()" style="background: var(--primary-gold); color: var(--text-dark); border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">Refresh</button>
+                    </div>
+                </div>
+                
+                <div id="responses-list" class="responses-list">
+                    <!-- Sample data - replace with real data from your backend -->
+                    <div class="response-item" onclick="viewResponse(1)">
+                        <div class="response-header">
+                            <span class="contact-name">John Doe - Ministry of Environment</span>
+                            <span class="submission-date">2024-08-26</span>
+                            <span class="file-count">5 files</span>
+                        </div>
+                        <div class="response-preview">
+                            Primary objectives: Seeking partnerships for renewable energy projects...
+                        </div>
+                        <div class="response-actions">
+                            <button class="action-btn view-btn" onclick="event.stopPropagation(); viewResponse(1)">View Details</button>
+                            <button class="action-btn download-btn" onclick="event.stopPropagation(); downloadResponse(1)">Download</button>
+                        </div>
+                    </div>
+                    
+                    <div class="response-item" onclick="viewResponse(2)">
+                        <div class="response-header">
+                            <span class="contact-name">Mary Smith - Climate Change Department</span>
+                            <span class="submission-date">2024-08-25</span>
+                            <span class="file-count">3 files</span>
+                        </div>
+                        <div class="response-preview">
+                            Current climate challenges: Flooding and desertification are major concerns...
+                        </div>
+                        <div class="response-actions">
+                            <button class="action-btn view-btn" onclick="event.stopPropagation(); viewResponse(2)">View Details</button>
+                            <button class="action-btn download-btn" onclick="event.stopPropagation(); downloadResponse(2)">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Response Detail Modal -->
+    <div id="response-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="response-details">
+                <!-- Response details will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Demo credentials - replace with secure authentication
+        const ADMIN_CREDENTIALS = {
+            username: 'jetage-admin',
+            password: 'cop30-benue-2024'
+        };
+
+        // EmailJS Integration Notice
+        let responsesData = [
+            {
+                id: 'demo',
+                stateContact: 'Email Integration Active',
+                contactTitle: 'Responses will be sent to: aaaarnoldius@gmail.com',
+                contactEmail: 'aaaarnoldius@gmail.com',
+                contactPhone: 'Check your email for submissions',
+                ministryDept: 'EmailJS Service',
+                submissionDate: '2024-08-26',
+                cop30Goals: 'All questionnaire responses are now automatically emailed to aaaarnoldius@gmail.com with all uploaded files included as base64 attachments.',
+                files: ['Email attachments include all uploaded files']
+            }
+        ];
+
+        // Email Integration Status
+        const emailStatus = {
+            service: 'EmailJS',
+            destination: 'aaaarnoldius@gmail.com',
+            status: 'Active',
+            note: 'Responses are emailed directly. This dashboard shows system status only.'
+        };
+
+        document.getElementById('admin-login').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('admin-username').value;
+            const password = document.getElementById('admin-password').value;
+            
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                loadDashboardData();
+            } else {
+                alert('Invalid credentials. Please try again.');
+            }
+        });
+
+        function loadDashboardData() {
+            // Update statistics for email integration
+            document.getElementById('total-responses').textContent = 'Check Email';
+            document.getElementById('responses-today').textContent = 'Check Email';
+            document.getElementById('total-files').textContent = 'Via Email';
+            document.getElementById('pending-review').textContent = 'Check Email';
+            
+            // Load email status
+            refreshResponses();
+            
+            // Add email integration notice
+            const notice = document.createElement('div');
+            notice.style.cssText = 'background: #fff3cd; border: 1px solid #ffeaa7; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: center;';
+            notice.innerHTML = `
+                <h4 style="color: #856404; margin: 0 0 10px 0;">📧 Email Integration Active</h4>
+                <p style="margin: 0; color: #856404;">
+                    All questionnaire responses are automatically sent to <strong>aaaarnoldius@gmail.com</strong><br>
+                    Check your email for new submissions with file attachments.
+                </p>
+            `;
+            
+            const dashboard = document.querySelector('.admin-container');
+            const statsGrid = document.querySelector('.stats-grid');
+            dashboard.insertBefore(notice, statsGrid);
+        }
+
+        function refreshResponses() {
+            const container = document.getElementById('responses-list');
+            container.innerHTML = '';
+            
+            responsesData.forEach(response => {
+                const item = createResponseItem(response);
+                container.appendChild(item);
+            });
+        }
+
+        function createResponseItem(response) {
+            const div = document.createElement('div');
+            div.className = 'response-item';
+            div.onclick = () => viewResponse(response.id);
+            
+            div.innerHTML = `
+                <div class="response-header">
+                    <span class="contact-name">${response.stateContact} - ${response.contactTitle}</span>
+                    <span class="submission-date">${response.submissionDate}</span>
+                    <span class="file-count">${response.files.length} files</span>
+                </div>
+                <div class="response-preview">
+                    Primary objectives: ${response.cop30Goals.substring(0, 80)}...
+                </div>
+                <div class="response-actions">
+                    <button class="action-btn view-btn" onclick="event.stopPropagation(); viewResponse(${response.id})">View Details</button>
+                    <button class="action-btn download-btn" onclick="event.stopPropagation(); downloadResponse(${response.id})">Download</button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        function viewResponse(id) {
+            const response = responsesData.find(r => r.id === id);
+            if (!response) return;
+            
+            const modal = document.getElementById('response-modal');
+            const details = document.getElementById('response-details');
+            
+            details.innerHTML = `
+                <h2>Response Details - ${response.stateContact}</h2>
+                <div class="form-section">
+                    <h3>Contact Information</h3>
+                    <p><strong>Name:</strong> ${response.stateContact}</p>
+                    <p><strong>Title:</strong> ${response.contactTitle}</p>
+                    <p><strong>Email:</strong> ${response.contactEmail}</p>
+                    <p><strong>Phone:</strong> ${response.contactPhone}</p>
+                    <p><strong>Ministry/Department:</strong> ${response.ministryDept}</p>
+                </div>
+                <div class="form-section">
+                    <h3>COP30 Objectives</h3>
+                    <p>${response.cop30Goals}</p>
+                </div>
+                <div class="form-section">
+                    <h3>Uploaded Files (${response.files.length})</h3>
+                    <ul>
+                        ${response.files.map(file => `<li>${file}</li>`).join('')}
+                    </ul>
+                </div>
+                <div class="form-section">
+                    <h3>Submission Date</h3>
+                    <p>${response.submissionDate}</p>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('response-modal').style.display = 'none';
+        }
+
+        function downloadResponse(id) {
+            const response = responsesData.find(r => r.id === id);
+            if (!response) return;
+            
+            const dataStr = JSON.stringify(response, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `cop30-response-${response.id}-${response.submissionDate}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function exportAllData() {
+            const dataStr = JSON.stringify(responsesData, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            
+            const exportFileDefaultName = `cop30-all-responses-${new Date().toISOString().split('T')[0]}.json`;
+            
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+        }
+
+        function logout() {
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('login-screen').style.display = 'block';
+            document.getElementById('admin-username').value = '';
+            document.getElementById('admin-password').value = '';
+        }
+
+        // Search functionality
+        document.getElementById('search-responses').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.response-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                item.style.display = text.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('response-modal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

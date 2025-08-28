@@ -1,0 +1,510 @@
+/* Jetage Energy COP30 Questionnaire Styles */
+
+:root {
+    --primary-gold: #FFB800;
+    --primary-green: #1B5E20;
+    --light-green: #4CAF50;
+    --dark-green: #0F3F0C;
+    --bg-light: #F8F9FA;
+    --bg-gradient: linear-gradient(135deg, #F8F9FA 0%, #E8F5E8 100%);
+    --text-dark: #2C3E50;
+    --text-light: #6C757D;
+    --border-light: #E0E0E0;
+    --white: #FFFFFF;
+    --error: #E74C3C;
+    --success: #27AE60;
+    --shadow-light: 0 2px 4px rgba(0,0,0,0.05);
+    --shadow-medium: 0 4px 12px rgba(0,0,0,0.1);
+    --shadow-heavy: 0 8px 24px rgba(0,0,0,0.15);
+    --border-radius: 16px;
+    --border-radius-small: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background: #FAFAFA;
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: var(--white);
+    padding: 3rem 0;
+    text-align: center;
+    position: relative;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    background: var(--white);
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+header h2 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.tagline {
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.8;
+    font-style: italic;
+}
+
+/* Main Content */
+main {
+    padding: 3rem 0;
+}
+
+.intro {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 2rem;
+    border-left: 4px solid var(--primary-gold);
+}
+
+.intro p {
+    font-size: 1.25rem;
+    text-align: center;
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-weight: 500;
+}
+
+/* Form Styles */
+.questionnaire-form {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.form-section:last-of-type {
+    border-bottom: none;
+    margin-bottom: 2rem;
+}
+
+.form-section h3 {
+    color: var(--primary-green);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-gold);
+    display: inline-block;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-small);
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
+    background: var(--white);
+    box-shadow: var(--shadow-light);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-gold);
+    box-shadow: 0 0 0 4px rgba(255, 184, 0, 0.15), var(--shadow-medium);
+    transform: translateY(-1px);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:required:invalid {
+    border-color: var(--error);
+}
+
+.form-group input:required:valid {
+    border-color: var(--success);
+}
+
+/* Button Styles */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-light);
+}
+
+.submit-btn,
+.pdf-btn {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius-small);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 220px;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.01em;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+    color: var(--white);
+    box-shadow: var(--shadow-medium);
+}
+
+.submit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s;
+}
+
+.submit-btn:hover::before {
+    left: 100%;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(27, 94, 32, 0.4);
+}
+
+.pdf-btn {
+    background: linear-gradient(135deg, var(--primary-gold), #FFC107);
+    color: var(--text-dark);
+    box-shadow: var(--shadow-medium);
+}
+
+.pdf-btn:hover {
+    background: linear-gradient(135deg, #FFD700, var(--primary-gold));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(255, 184, 0, 0.4);
+}
+
+/* Success Message */
+.success-message {
+    background: linear-gradient(135deg, var(--success), #2ECC71);
+    color: var(--white);
+    padding: 3rem 2rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin-top: 3rem;
+    box-shadow: var(--shadow-heavy);
+    border: 1px solid rgba(39, 174, 96, 0.3);
+    animation: slideInUp 0.6s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-message h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Footer */
+footer {
+    background: var(--primary-green);
+    color: var(--white);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 16px;
+    }
+
+    header {
+        padding: 2rem 0;
+    }
+
+    header h1 {
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+
+    header h2 {
+        font-size: 1.25rem;
+    }
+
+    .tagline {
+        font-size: 0.9rem;
+    }
+
+    .logo {
+        width: 100px;
+        padding: 8px;
+    }
+
+    .intro,
+    .questionnaire-form {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section h3 {
+        font-size: 1.1rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+
+    .submit-btn,
+    .pdf-btn {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header h2 {
+        font-size: 1.1rem;
+    }
+
+    .tagline {
+        font-size: 0.85rem;
+    }
+
+    .intro,
+    .questionnaire-form {
+        padding: 1.25rem;
+        border-radius: 8px;
+    }
+    
+    .form-section h3 {
+        font-size: 1rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.875rem;
+        font-size: 16px; /* Prevent zoom on iOS */
+        border-radius: 8px;
+    }
+
+    .intro p {
+        font-size: 1.1rem;
+    }
+}
+
+/* File Upload Styles */
+.file-input {
+    border: 2px dashed var(--primary-gold) !important;
+    background: rgba(255, 184, 0, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-input:hover {
+    border-color: var(--primary-green) !important;
+    background: rgba(27, 94, 32, 0.05);
+}
+
+.file-help {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+.file-preview {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.file-item {
+    background: var(--white);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+    position: relative;
+}
+
+.file-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.file-item .file-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.file-item .file-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.file-item .file-size {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.file-item .remove-file {
+    background: var(--error);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.file-item .remove-file:hover {
+    background: #c0392b;
+}
+
+.file-icon {
+    width: 50px;
+    height: 50px;
+    background: var(--primary-gold);
+    color: var(--text-dark);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* Loading State */
+.loading {
+    pointer-events: none;
+}
+
+.submit-btn.loading {
+    position: relative;
+    color: transparent;
+}
+
+.submit-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+    color: var(--white);
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
